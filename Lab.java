@@ -6,20 +6,22 @@ public class Lab {
         Patient patient = new Patient(1190338157, 19);
         BloodType bloodType = new BloodType(patient);
         AIDS aids = new AIDS(patient);
+
         bloodType.runOperation();
         aids.runOperation();
-        if (bloodType.getConfirmByLab()) {
-            laboratory.getStatisticalTests().add(bloodType);
-        }
+
         laboratory.getAllTests().add(bloodType);
         laboratory.getPatients().add(patient);
         laboratory.getAllTests().add(aids);
+
         ShowResults showResults=new ShowResults();
         showResults.copytTest=bloodType;
         bloodType.sendResult(showResults);
+
         ShowResults showResults1=new ShowResults();
         showResults1.copytTest=aids;
         aids.sendResult(showResults1);
+
         for (Test test : patient.getListOfTest()) {
             if (test instanceof Anemia) {
                 System.out.println(((Anemia) test).makingPrivate());
@@ -287,6 +289,7 @@ class BloodType extends Test implements iCheckTest {
         if (cbc.getRange_one() <= this.getCBC() && cbc.getRange_two() >= this.getCBC() && bmp.getRange_one() <= this.getBMP() && bmp.getRange_two() >= this.getBMP() &&
                 bloodPresure.getRange_one() <= this.getBloodPressure() && bloodPresure.getRange_two() >= this.getBloodPressure()) {
             this.confirmByLab = true;
+            Laboratory.getLaboratory().getStatisticalTests().add(this);
         } else {
             this.wrongAnswer();
         }
@@ -374,6 +377,7 @@ class AIDS extends Test implements iCheckTest, iPrivate {
         if (cbc.getRange_one() <= this.getCBC() && cbc.getRange_two() >= this.getCBC() && bmp.getRange_one() <= this.getBMP() && bmp.getRange_two() >= this.getBMP() &&
                 bloodPresure.getRange_one() <= this.getBloodPressure() && bloodPresure.getRange_two() >= this.getBloodPressure()) {
             this.confirmByLab = true;
+                Laboratory.getLaboratory().getStatisticalTests().add(this);
         } else {
             this.wrongAnswer();
         }
