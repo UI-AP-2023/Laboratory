@@ -14,12 +14,12 @@ public class Lab {
         laboratory.getPatients().add(patient);
         laboratory.getAllTests().add(aids);
 
-        ShowResults showResults = new ShowResults();
-        showResults.copytTest = bloodType;
+        ShowResults showResults=new ShowResults();
+        showResults.copytTest=bloodType;
         bloodType.sendResult(showResults);
 
-        ShowResults showResults1 = new ShowResults();
-        showResults1.copytTest = aids;
+        ShowResults showResults1=new ShowResults();
+        showResults1.copytTest=aids;
         aids.sendResult(showResults1);
 
         for (Test test : patient.getListOfTest()) {
@@ -35,7 +35,7 @@ public class Lab {
                 System.out.println(((Thyroid) test).makingPrivate());
                 System.out.println();
             }
-            if (test instanceof BloodType) {
+            if(test instanceof BloodType){
                 System.out.println(((BloodType) test).toString());
                 System.out.println();
             }
@@ -97,16 +97,16 @@ class Patient {
             check=request.compareTo(req);
         }
         if(check==0){
-        if (test instanceof AIDS) {
-            return ((AIDS) test).gettingTheRequests();
+            if (test instanceof AIDS) {
+                return ((AIDS) test).gettingTheRequests();
+            }
+            if (test instanceof Anemia) {
+                return ((Anemia) test).gettingTheRequests();
+            }
+            if (test instanceof Thyroid) {
+                return ((Thyroid) test).gettingTheRequests();
+            }
         }
-        if (test instanceof Anemia) {
-            return ((Anemia) test).gettingTheRequests();
-        }
-        if (test instanceof Thyroid) {
-            return ((Thyroid) test).gettingTheRequests();
-        }
-    }
         return null;
     }
 }
@@ -233,6 +233,15 @@ abstract class Test extends ShowResults {
         return showResult2.copytTest;
     }
 
+//   public void addToStatisticalTests(Test test) {
+//        ShowResults showResults1 = new ShowResults();
+//        showResults1.copytTest=test;
+//       ShowResults showResult2 = new ShowResults();
+//       showResult2 = (ShowResults) showResults1.clone();
+//       showResult2.copytTest.setPatient(null);
+//       Laboratory.getLaboratory().getStatisticalTests().add(showResult2.copytTest);
+//    }
+
     public abstract void runOperation();
 }
 
@@ -292,7 +301,7 @@ class BloodType extends Test implements iCheckTest {
         if (cbc.getRange_one() <= this.getCBC() && cbc.getRange_two() >= this.getCBC() && bmp.getRange_one() <= this.getBMP() && bmp.getRange_two() >= this.getBMP() &&
                 bloodPresure.getRange_one() <= this.getBloodPressure() && bloodPresure.getRange_two() >= this.getBloodPressure()) {
             this.confirmByLab = true;
-            Laboratory.getLaboratory().getStatisticalTests().add(this);
+//            addToStatisticalTests(this);
         } else {
             this.wrongAnswer();
         }
@@ -380,7 +389,7 @@ class AIDS extends Test implements iCheckTest, iPrivate {
         if (cbc.getRange_one() <= this.getCBC() && cbc.getRange_two() >= this.getCBC() && bmp.getRange_one() <= this.getBMP() && bmp.getRange_two() >= this.getBMP() &&
                 bloodPresure.getRange_one() <= this.getBloodPressure() && bloodPresure.getRange_two() >= this.getBloodPressure()) {
             this.confirmByLab = true;
-            Laboratory.getLaboratory().getStatisticalTests().add(this);
+//            addToStatisticalTests(this);
         } else {
             this.wrongAnswer();
         }
@@ -438,7 +447,7 @@ class Thyroid extends Test implements iPrivate {
         this.setBMP(this.getCBC() - random);
         this.setBloodPressure(getCBC() / getBMP());
         this.setHeartPressure(random);
-        Laboratory.getLaboratory().getStatisticalTests().add(this);
+//        addToStatisticalTests(this);
     }
 
     private double factorial(double random) {
@@ -481,7 +490,7 @@ class Anemia extends Test implements iPrivate {
         this.setCBC((int) Math.sqrt(random));
         this.setBMP(this.getCBC() + 2);
         this.setBloodPressure(getCBC() / getBMP());
-        Laboratory.getLaboratory().getStatisticalTests().add(this);
+//        addToStatisticalTests(this);
 
     }
 
