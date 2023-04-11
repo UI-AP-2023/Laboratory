@@ -14,12 +14,12 @@ public class Lab {
         laboratory.getPatients().add(patient);
         laboratory.getAllTests().add(aids);
 
-        ShowResults showResults=new ShowResults();
-        showResults.copytTest=bloodType;
+        ShowResults showResults = new ShowResults();
+        showResults.copytTest = bloodType;
         bloodType.sendResult(showResults);
 
-        ShowResults showResults1=new ShowResults();
-        showResults1.copytTest=aids;
+        ShowResults showResults1 = new ShowResults();
+        showResults1.copytTest = aids;
         aids.sendResult(showResults1);
 
         for (Test test : patient.getListOfTest()) {
@@ -35,7 +35,7 @@ public class Lab {
                 System.out.println(((Thyroid) test).makingPrivate());
                 System.out.println();
             }
-            if(test instanceof BloodType){
+            if (test instanceof BloodType) {
                 System.out.println(((BloodType) test).toString());
                 System.out.println();
             }
@@ -92,18 +92,21 @@ class Patient {
 
     public String request(Test test) {
         Request request = new Request(this);
-        if (!Laboratory.getLaboratory().getRequests().contains(request)) {
-            Laboratory.getLaboratory().getRequests().add(request);
-            if (test instanceof AIDS) {
-                return ((AIDS) test).gettingTheRequests();
-            }
-            if (test instanceof Anemia) {
-                return ((Anemia) test).gettingTheRequests();
-            }
-            if (test instanceof Thyroid) {
-                return ((Thyroid) test).gettingTheRequests();
-            }
+        int check=0;
+        for (Request req : Laboratory.getLaboratory().getRequests()) {
+            check=request.compareTo(req);
         }
+        if(check==0){
+        if (test instanceof AIDS) {
+            return ((AIDS) test).gettingTheRequests();
+        }
+        if (test instanceof Anemia) {
+            return ((Anemia) test).gettingTheRequests();
+        }
+        if (test instanceof Thyroid) {
+            return ((Thyroid) test).gettingTheRequests();
+        }
+    }
         return null;
     }
 }
@@ -377,7 +380,7 @@ class AIDS extends Test implements iCheckTest, iPrivate {
         if (cbc.getRange_one() <= this.getCBC() && cbc.getRange_two() >= this.getCBC() && bmp.getRange_one() <= this.getBMP() && bmp.getRange_two() >= this.getBMP() &&
                 bloodPresure.getRange_one() <= this.getBloodPressure() && bloodPresure.getRange_two() >= this.getBloodPressure()) {
             this.confirmByLab = true;
-                Laboratory.getLaboratory().getStatisticalTests().add(this);
+            Laboratory.getLaboratory().getStatisticalTests().add(this);
         } else {
             this.wrongAnswer();
         }
@@ -435,6 +438,7 @@ class Thyroid extends Test implements iPrivate {
         this.setBMP(this.getCBC() - random);
         this.setBloodPressure(getCBC() / getBMP());
         this.setHeartPressure(random);
+        Laboratory.getLaboratory().getStatisticalTests().add(this);
     }
 
     private double factorial(double random) {
@@ -477,6 +481,7 @@ class Anemia extends Test implements iPrivate {
         this.setCBC((int) Math.sqrt(random));
         this.setBMP(this.getCBC() + 2);
         this.setBloodPressure(getCBC() / getBMP());
+        Laboratory.getLaboratory().getStatisticalTests().add(this);
 
     }
 
@@ -570,7 +575,7 @@ interface iPrivate {
     public String gettingTheRequests();
 }
 
-class Request {
+class Request implements Comparable<Request> {
     private Patient patient;
 
     Request(Patient patient) {
@@ -585,4 +590,12 @@ class Request {
         return this.patient;
     }
 
+    @Override
+    public int compareTo(Request request) {
+        if (!Laboratory.getLaboratory().getRequests().contains(request)) {
+            Laboratory.getLaboratory().getRequests().add(request);
+            return 0;
+        }
+        return -1;
+    }
 }
