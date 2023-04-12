@@ -37,10 +37,14 @@ public class Lab {
             }
             if(test instanceof BloodType){
                 System.out.println(((BloodType) test).toString());
-                System.out.println();
             }
         }
         System.out.println(patient.request(aids));
+        System.out.println();
+        for(Test test: Laboratory.getLaboratory().getStatisticalTests()){
+            System.out.println(test.toString());
+            System.out.println();
+        }
 
 
     }
@@ -233,15 +237,6 @@ abstract class Test extends ShowResults {
         return showResult2.copytTest;
     }
 
-//   public void addToStatisticalTests(Test test) {
-//        ShowResults showResults1 = new ShowResults();
-//        showResults1.copytTest=test;
-//       ShowResults showResult2 = new ShowResults();
-//       showResult2 = (ShowResults) showResults1.clone();
-//       showResult2.copytTest.setPatient(null);
-//       Laboratory.getLaboratory().getStatisticalTests().add(showResult2.copytTest);
-//    }
-
     public abstract void runOperation();
 }
 
@@ -301,7 +296,7 @@ class BloodType extends Test implements iCheckTest {
         if (cbc.getRange_one() <= this.getCBC() && cbc.getRange_two() >= this.getCBC() && bmp.getRange_one() <= this.getBMP() && bmp.getRange_two() >= this.getBMP() &&
                 bloodPresure.getRange_one() <= this.getBloodPressure() && bloodPresure.getRange_two() >= this.getBloodPressure()) {
             this.confirmByLab = true;
-//            addToStatisticalTests(this);
+            Laboratory.getLaboratory().getStatisticalTests().add(this);
         } else {
             this.wrongAnswer();
         }
@@ -389,7 +384,7 @@ class AIDS extends Test implements iCheckTest, iPrivate {
         if (cbc.getRange_one() <= this.getCBC() && cbc.getRange_two() >= this.getCBC() && bmp.getRange_one() <= this.getBMP() && bmp.getRange_two() >= this.getBMP() &&
                 bloodPresure.getRange_one() <= this.getBloodPressure() && bloodPresure.getRange_two() >= this.getBloodPressure()) {
             this.confirmByLab = true;
-//            addToStatisticalTests(this);
+            Laboratory.getLaboratory().getStatisticalTests().add(this);
         } else {
             this.wrongAnswer();
         }
@@ -447,7 +442,7 @@ class Thyroid extends Test implements iPrivate {
         this.setBMP(this.getCBC() - random);
         this.setBloodPressure(getCBC() / getBMP());
         this.setHeartPressure(random);
-//        addToStatisticalTests(this);
+        Laboratory.getLaboratory().getStatisticalTests().add(this);
     }
 
     private double factorial(double random) {
@@ -490,7 +485,7 @@ class Anemia extends Test implements iPrivate {
         this.setCBC((int) Math.sqrt(random));
         this.setBMP(this.getCBC() + 2);
         this.setBloodPressure(getCBC() / getBMP());
-//        addToStatisticalTests(this);
+        Laboratory.getLaboratory().getStatisticalTests().add(this);
 
     }
 
