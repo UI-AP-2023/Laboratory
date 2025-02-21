@@ -3,7 +3,7 @@ import java.util.ArrayList;
 public class Lab {
     public static void main(String[] args) {
         Laboratory laboratory = Laboratory.getLaboratory("Shabnam");
-        Patient patient = new Patient(1190338157, 19);
+        Patient patient = new Patient(1191111111, 19);
         BloodType bloodType = new BloodType(patient);
         AIDS aids = new AIDS(patient);
 
